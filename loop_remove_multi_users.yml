@@ -1,0 +1,14 @@
+---
+- name: Remove multiple users using loop 
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: task to remove multiple users using loop
+      user:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - rama
+        - krishna

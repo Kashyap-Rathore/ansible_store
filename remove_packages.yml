@@ -1,0 +1,12 @@
+---
+- name: Remove packages
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: remove packages
+      yum:
+        name: httpd
+        state: absent
+

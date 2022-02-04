@@ -1,0 +1,41 @@
+---
+- name: apache httpd install and running on rhel as well as debian server
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: download and install httpd on rhel
+      yum:
+        name: httpd
+        state: installed
+      when: ansible_os_family == "RedHat"
+      notify: start httpd service
+
+    - name: download and install apache server on debian
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+      notify: start apache2 service
+
+    - name: create a /var/www/html/index.html
+      copy:
+        content: |
+          <html>
+          <h1>Welcome to the Page</h1>
+          </html>
+        dest: /var/www/html/index.html
+
+  handlers:
+    - name: start httpd service
+      service:
+        name: httpd
+        state: started
+      when: ansible_os_family == "RedHat"
+
+    - name: start apache2 service
+      service:
+        name: apache2
+        state: started
+      when: ansible_os_family == "Debian"

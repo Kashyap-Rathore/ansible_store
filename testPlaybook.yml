@@ -1,0 +1,10 @@
+---
+- name: Playbook to start and stop a service
+  hosts: all
+  become: true
+  gather_facts: yes
+  tasks:
+    - name: Task to start and stop a service
+      service:
+        name: httpd
+        state: started

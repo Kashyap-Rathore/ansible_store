@@ -1,0 +1,18 @@
+---
+- name: install git, httpd and start httpd service
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+  - name: task to install through yum
+    yum:
+      name: httpd
+      state: latest
+  - name: task to install git through yum
+    yum:
+      name: git
+      state: latest    
+  - name: start httpd service through service module
+    service:
+      name: httpd
+      state: started

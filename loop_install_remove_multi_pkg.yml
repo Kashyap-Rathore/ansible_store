@@ -1,0 +1,17 @@
+---
+- name: loop to install and remove multiple pkg
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: Install and remove multiple pkg using loop
+      yum:
+        name: "{{ item.nameOfPkg }}"
+        state: "{{ item.stateOfPkg }}"
+      loop:
+        - { nameOfPkg: 'git', stateOfPkg: 'installed' }
+        - { nameOfPkg: 'tree', stateOfPkg: 'absent' }  
+        - { nameOfPkg: 'make', stateOfPkg: 'installed' }
+        - { nameOfPkg: 'httpd', stateOfPkg: 'removed' }
+

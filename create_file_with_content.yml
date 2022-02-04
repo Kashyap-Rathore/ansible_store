@@ -1,0 +1,13 @@
+---
+- name: Playbook to create a file with content
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: task to create a file with content
+      copy:
+        content: |
+          Raja
+          Rani
+        dest: /home/testfile.txt

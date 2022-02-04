@@ -1,0 +1,21 @@
+---
+- name: Playbook to create a directory and file in /mnt location
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: task to create a dir in /mnt location called ansibleDir
+      file:
+        path: /mnt/ansibleDir
+        state: directory
+        mode: '0777'
+    - name: task to create a file in /mnt/ansibleDir location called ansibleFile.txt
+      file:
+        path: /mnt/ansibleDir/ansibleFile.txt
+        state: touch
+        mode: '0777'
+    - name: remove a file 
+      file:
+        path: /mnt/test_file_from_control_node.txt
+        state: absent

@@ -1,0 +1,13 @@
+---
+- name: Playbook to start service
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+    - name: start the httpd service
+      register: co
+      service:
+        name: httpd
+        state: started
+    - debug: var=co.stdout

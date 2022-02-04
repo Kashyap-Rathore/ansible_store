@@ -1,0 +1,11 @@
+---
+- name: uninstalling multiple packages using python list
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: Uninstalling multiple packages using python list instead of with_items
+      yum:
+        name: ['git', 'tree']
+        state: removed

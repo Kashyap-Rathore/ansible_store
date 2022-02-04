@@ -1,0 +1,22 @@
+---
+- name: Playbook to download, install and run apache httpd server
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: download httpd service package
+      yum:
+        name: httpd
+        state: latest
+    - name: start the httpd service
+      service:
+        name: httpd
+        state: started
+    - name: create index.html file at /var/www/html location with content
+      copy:
+        content: |
+          <html>
+          <h1>Welcome to the Page</h1>
+          </html>
+        dest: /var/www/html/index.html 

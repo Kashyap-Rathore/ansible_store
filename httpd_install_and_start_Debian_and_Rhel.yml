@@ -1,0 +1,53 @@
+---
+- name: apache httpd install and running on rhel as well as debian server
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: download and install httpd on rhel
+      yum:
+        name: httpd
+        state: installed
+      when: ansible_os_family == "RedHat"
+
+      #- name: Update and upgrade apt packages 
+      #become: true
+      #apt:
+      #upgrade: yes
+      #update_cache: yes
+      #cache_valid_time: 86400 #One day
+      #when: ansible_os_family == "Debian"
+        
+    - name: download and install apache server on debian
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: start httpd service
+      service:
+        name: httpd
+        state: started
+      when: ansible_os_family == "RedHat"
+
+    - name: start apache2 service
+      service:
+        name: apache2
+        state: started
+      when: ansible_os_family == "Debian"
+    
+    - name: create a /var/www/html/index.html
+      copy:
+        content: |
+          <html>
+          <h1>Welcome to the Page</h1>
+          </html>
+        dest: /var/www/html/index.html
+
+    - name: Install make
+      apt:
+       name: make
+       state: present
+      when: ansible_os_family == "Debian"
+         #       update_cache: yes

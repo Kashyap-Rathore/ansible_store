@@ -1,0 +1,11 @@
+---
+- name: Playbook to copy a file from control node to managed nodes
+  hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+    - name: to copy a file from control node to managed nodes
+      copy:
+        src: /mnt/test_file_from_control_node.txt
+        dest: /mnt/test_file_from_control_node.txt

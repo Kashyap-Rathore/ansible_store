@@ -1,0 +1,10 @@
+---
+- name: Ansible Playbook for creating a user 
+  hosts: all
+  gather_facts: yes
+  become: true
+  tasks:
+    - name: Task for creating a user called yash
+      user:
+        name: yash
+
