@@ -1,0 +1,20 @@
+---
+- name: Create user using vars
+  hosts: all
+  become: true
+  gather_facts: yes
+  vars_files:
+    - /home/playbooks/input_files_dir/user_create.yml
+
+  tasks:
+    - name: Creating user {{ user_name }}
+      user:
+        name: "{{ user_name }}"
+
+    - name: Creating a temp directory for new user {{ user_name }} in /opt/{{ user_name }}_temp
+      file:
+        path: /opt/{{ user_name }}_temp
+        state: directory
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: 0755

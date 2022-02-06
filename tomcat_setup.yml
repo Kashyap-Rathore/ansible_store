@@ -1,0 +1,47 @@
+---
+- name: Setup Apache Tomcat Server
+  hosts: rhelservers
+  become: true
+  gather_facts: yes
+
+  vars_files:
+    - /home/playbooks/input_files_dir/tomcat_input.yml
+
+  tasks:
+    - name: Download and install java v1.8.x
+      yum:
+        name: java
+        state: installed
+
+    - name: Download Apache Tomcat package
+      get_url:
+        url: "{{ pkg_link }}"
+        dest: /opt
+        mode: '0755'
+
+    - name: Extract Apache Tomcat package
+      unarchive:
+        src: /opt/{{ pkg_file }}.tar.gz
+        dest: /opt
+        remote_src: yes
+
+    - name: Give permission to package file
+      file:
+        path: /opt/{{ pkg_file }}
+        mode: '0755'
+        recurse: yes
+
+    - name: Create two symbolic links
+      file:
+        src: "{{ item.link_src }}"
+        dest: "{{ item.link_dest }}"
+        state: link
+      loop:
+        - { link_src: '/opt/{{ pkg_file }}/bin/startup.sh', link_dest: '/usr/local/bin/tomcatup' }
+        - { link_src: '/opt/{{ pkg_file }}/bin/shutdown.sh', link_dest: '/usr/local/bin/tomcatdown' }
+
+    - name: Start the Tomcat Server
+      command: nohup ./tomcatup
+      args:
+        chdir: /usr/local/bin/
+      

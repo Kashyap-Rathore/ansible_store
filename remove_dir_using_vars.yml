@@ -1,0 +1,13 @@
+---
+- name: remove dir using vars
+  hosts: all
+  become: true
+  gather_facts: yes
+  vars:
+    dir_name: rama_temp
+
+  tasks:
+    - name: remove dir
+      file:
+        path: /opt/{{ dir_name }}
+        state: absent
