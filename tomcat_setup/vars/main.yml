@@ -1,0 +1,4 @@
+---
+# vars file for tomcat_setup
+pkg_link: 'https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz'
+pkg_file: apache-tomcat-9.0.58

@@ -31,6 +31,12 @@
         mode: '0755'
         recurse: yes
 
+    - name: Copy a file for checking tomcatup and tomcatdown
+      copy:
+        src: /home/playbooks/testfile.txt
+        dest: /opt/testfile.txt
+      notify: Restart Tomcat Server 
+
     - name: Create two symbolic links
       file:
         src: "{{ item.link_src }}"
@@ -39,9 +45,16 @@
       loop:
         - { link_src: '/opt/{{ pkg_file }}/bin/startup.sh', link_dest: '/usr/local/bin/tomcatup' }
         - { link_src: '/opt/{{ pkg_file }}/bin/shutdown.sh', link_dest: '/usr/local/bin/tomcatdown' }
+      notify: Start the Tomcat Server
 
+
+  handlers:
     - name: Start the Tomcat Server
       command: nohup ./tomcatup
       args:
         chdir: /usr/local/bin/
-      
+
+    - name: Restart Tomcat Server
+      command: ./tomcatdown ; nohup ./tomcatup
+      args:
+        chdir: /usr/local/bin/

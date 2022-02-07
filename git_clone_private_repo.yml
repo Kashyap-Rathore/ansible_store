@@ -1,0 +1,13 @@
+---
+- name: Playbook to clone private repo
+  hosts: rhelservers
+  become: true
+  gather_facts: no
+  vars_files:
+    - /home/playbooks/input_files_dir/git_vault_file.yml
+
+  tasks:
+    - name: cloning repo- {{ git_repo }}
+      git:
+        repo: https://{{git_user}}:{{ git_pass }}@github.com/{{git_user}}/{{git_repo}}
+        dest: /home/playbooks/git_repos
