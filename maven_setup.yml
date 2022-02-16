@@ -1,0 +1,23 @@
+---
+- name: Setup Jenkins Server
+  hosts: jenkinservers
+  become: true
+  gather_facts: no
+  vars_files:
+    - /home/playbooks/input_files_dir/jenkins_maven_input.yml
+
+  tasks:
+    - name: download maven
+      get_url:
+        url: "{{ maven_url }}"
+        dest: "{{ maven_dest }}"
+        mode: '0755'      
+
+    - name: extract maven
+      unarchive:
+        src: "{{ maven_file }}"
+        dest: "{{ maven_dest }}"
+        remote_src: yes
+    
+    - name: rename maven folder
+      command: mv "{{ maven_folder }}" "{{ maven_dest }}"/maven

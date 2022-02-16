@@ -1,0 +1,50 @@
+---
+- name: Setup Jenkins Server
+  hosts: jenkinservers
+  become: true
+  gather_facts: yes
+  vars_files:
+    - /home/playbooks/input_files_dir/jenkins_maven_input.yml
+
+  tasks:
+    - name: download and install Java version - {{ java_version }}
+      yum:
+        name: "{{ java_version }}"
+        state: present
+
+    - name: download maven
+      get_url:
+        url: "{{ maven_url }}"
+        dest: "{{ maven_dest }}"
+        mode: '0755'
+
+    - name: extract maven
+      unarchive:
+        src: "{{ maven_file }}"
+        dest: "{{ maven_dest }}"
+        remote_src: yes
+
+    - name: rename maven folder
+      command: mv "{{ maven_folder }}" "{{ maven_dest }}"/maven          
+
+    - name: download jenkins
+      get_url:
+        url: "{{ jenkins_url }}"
+        dest: "{{ jenkins_dest }}"
+        mode: '0755'
+
+    - name: Configure or authenticate jenkins keys
+      rpm_key:
+        state: present
+        key: "{{ jenkins_key }}"
+
+    - name: yum install jenkins
+      yum:
+        name: jenkins
+        state: installed
+
+    - name: start jenkins services
+      service:
+        name: jenkins 
+        state: started
+        enabled: yes

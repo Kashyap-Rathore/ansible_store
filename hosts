@@ -6,4 +6,5 @@ awsadmin@172.31.32.20
 ubuadmin@172.31.32.2
 ubuadmin@172.31.37.3
 
-localhost
+[jenkinservers]
+rheladmin@172.31.43.165
