@@ -8,3 +8,6 @@ ubuadmin@172.31.37.3
 
 [jenkinservers]
 rheladmin@172.31.43.165
+
+[ansibleandtomcatservers]
+awsadmin@172.31.32.20

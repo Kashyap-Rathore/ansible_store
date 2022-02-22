@@ -1,6 +1,6 @@
 ---
 - name: Setup Apache Tomcat Server
-  hosts: rhelservers
+  hosts: ansibleandtomcatservers
   become: true
   gather_facts: yes
 
@@ -46,6 +46,11 @@
         - { link_src: '/opt/{{ pkg_file }}/bin/startup.sh', link_dest: '/usr/local/bin/tomcatup' }
         - { link_src: '/opt/{{ pkg_file }}/bin/shutdown.sh', link_dest: '/usr/local/bin/tomcatdown' }
       notify: Start the Tomcat Server
+
+    - name: copy war file to the managed node
+      copy:
+        src: /home/playbooks/warfiles/webapp.war
+        dest: /opt/{{ tomcat_package }}/webapps/
 
 
   handlers:
